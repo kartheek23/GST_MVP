@@ -19,10 +19,11 @@ def run_agent(run_id: str):
         action, reason = decide_ims_action(row)
         results.append({
             "inum": row["inum"],
-            "status": row["match_status"],
-            "action": action,
+            "match_status": row["match_status"],
+            "agent_action": action,
             "reason": reason
         })
 
     conn.close()
     return results
+  

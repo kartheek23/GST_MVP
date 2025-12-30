@@ -1,4 +1,5 @@
 import sqlite3
+import os,sys
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
@@ -50,14 +51,21 @@ def init_db():
 
         CREATE TABLE IF NOT EXISTS reconciliation_results (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             run_id TEXT,
+
             gstin TEXT,
             stin TEXT,
             inum TEXT,
             invoice_date TEXT,
 
-            match_status TEXT, 
+            match_status TEXT,
             -- MATCH | MISSING_IN_PORTAL | MISSING_IN_BOOKS | VALUE_MISMATCH
+
+            reconciliation_action TEXT,
+            -- ACCEPT | WAIT | RECORD | REJECT | REVIEW
+
+            agent_reason TEXT,
 
             txval_books REAL,
             txval_portal REAL,
@@ -65,8 +73,10 @@ def init_db():
             val_portal REAL,
 
             created_at TEXT,
+
             FOREIGN KEY (run_id) REFERENCES runs(run_id)
         );
+
 
         CREATE TABLE IF NOT EXISTS agent_actions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

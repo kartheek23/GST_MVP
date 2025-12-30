@@ -1,14 +1,11 @@
 from fastapi import APIRouter
-from app.services.sandbox_gst import SandboxGSTClient
+from app.services.portal_service import fetch_portal_invoices
 
-router = APIRouter(prefix='/portal', tags=['portal'])
-@router.post('/fetch')
+router = APIRouter(prefix="/portal", tags=["Portal"])
+
+@router.post("/fetch")
 def fetch_portal(api_key: str, api_secret: str):
-    client = SandboxGSTClient(api_key, api_secret):
-    client.authenticate()
-    df = client.fetch_b2b_invoices()
-
-    df.to_excel('Purchase_Register_2025.xlsx', index=False)
+    df = fetch_portal_invoices(api_key, api_secret)
 
     return {
         "status": "success",
